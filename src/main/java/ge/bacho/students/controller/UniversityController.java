@@ -2,7 +2,6 @@ package ge.bacho.students.controller;
 
 import ge.bacho.students.model.dto.UniversityDTO;
 import ge.bacho.students.model.request.UniversityRequest;
-import ge.bacho.students.persistence.entity.University;
 import ge.bacho.students.service.UniversityService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -19,7 +18,9 @@ public class UniversityController {
     }
 
     @GetMapping
-    Page<UniversityDTO> getUniversities(@RequestParam int page, @RequestParam int pageSize, @RequestParam(required = false) String location) {
+    Page<UniversityDTO> getUniversities(@RequestParam(defaultValue = "0") int page,
+                                        @RequestParam(defaultValue = "10") int pageSize,
+                                        @RequestParam(required = false) String location) {
         if (location == null || location.isEmpty()) {
             return universityService.getAllUniversities(page, pageSize);
         } else {

@@ -27,8 +27,8 @@ public class UniversityService {
     }
 
     public University getUniversityById(long id) {
-            return universityRepository.findById(id)
-                    .orElseThrow(() -> new NoSuchElementException("University with ID " + id + " not found"));
+        return universityRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("University with ID " + id + " not found"));
     }
 
     public void createUniversity(UniversityRequest universityRequest) {
