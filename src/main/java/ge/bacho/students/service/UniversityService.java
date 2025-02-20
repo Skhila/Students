@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 @Service
 public class UniversityService {
     private final UniversityRepository universityRepository;
@@ -24,9 +26,9 @@ public class UniversityService {
         return universityRepository.findUniversitiesByLocation(location, PageRequest.of(page, pageSize));
     }
 
-    public UniversityDTO getUniversityById(long id) {
-        University university =  universityRepository.findById(id).get();
-        return mapUniversity(university);
+    public University getUniversityById(long id) {
+            return universityRepository.findById(id)
+                    .orElseThrow(() -> new NoSuchElementException("University with ID " + id + " not found"));
     }
 
     public void createUniversity(UniversityRequest universityRequest) {
@@ -50,7 +52,7 @@ public class UniversityService {
         universityRepository.deleteById(id);
     }
 
-    private UniversityDTO mapUniversity(University university) {
+    public UniversityDTO mapUniversity(University university) {
         return new UniversityDTO(university.getId(), university.getName(), university.getLocation());
     }
 }
