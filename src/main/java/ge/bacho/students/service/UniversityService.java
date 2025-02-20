@@ -1,0 +1,56 @@
+package ge.bacho.students.service;
+
+import ge.bacho.students.model.dto.UniversityDTO;
+import ge.bacho.students.model.request.UniversityRequest;
+import ge.bacho.students.persistence.entity.University;
+import ge.bacho.students.persistence.repository.UniversityRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UniversityService {
+    private final UniversityRepository universityRepository;
+
+    public UniversityService(UniversityRepository universityRepository) {
+        this.universityRepository = universityRepository;
+    }
+
+    public Page<UniversityDTO> getAllUniversities(int page, int pageSize) {
+        return universityRepository.findAllUniversities(PageRequest.of(page, pageSize));
+    }
+
+    public Page<UniversityDTO> getUniversitiesByLocation(int page, int pageSize, String location) {
+        return universityRepository.findUniversitiesByLocation(location, PageRequest.of(page, pageSize));
+    }
+
+    public UniversityDTO getUniversityById(long id) {
+        University university =  universityRepository.findById(id).get();
+        return mapUniversity(university);
+    }
+
+    public void createUniversity(UniversityRequest universityRequest) {
+        University university = new University();
+        university.setName(universityRequest.getName());
+        university.setLocation(universityRequest.getLocation());
+
+        universityRepository.save(university);
+    }
+
+    public UniversityDTO updateUniversity(long id, UniversityRequest universityRequest) {
+        University university = universityRepository.findById(id).get();
+        university.setName(universityRequest.getName());
+        university.setLocation(universityRequest.getLocation());
+
+        universityRepository.save(university);
+        return mapUniversity(university);
+    }
+
+    public void deleteUniversity(long id) {
+        universityRepository.deleteById(id);
+    }
+
+    private UniversityDTO mapUniversity(University university) {
+        return new UniversityDTO(university.getId(), university.getName(), university.getLocation());
+    }
+}
