@@ -3,13 +3,11 @@ package ge.bacho.students.controller;
 import ge.bacho.students.model.dto.FacultyDTO;
 import ge.bacho.students.model.request.FacultyRequest;
 import ge.bacho.students.service.FacultyService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
 @RestController
 @RequestMapping("/faculties")
 public class FacultyController {
@@ -20,8 +18,8 @@ public class FacultyController {
     }
 
     @GetMapping
-    Page<FacultyDTO> getFaculties(@RequestParam int page,
-                                  @RequestParam int pageSize,
+    Page<FacultyDTO> getFaculties(@RequestParam(defaultValue = "0") int page,
+                                  @RequestParam(defaultValue = "10") int pageSize,
                                   @RequestParam(required = false) String universityName,
                                   @RequestParam(required = false) Double tuitionFee) {
         if (universityName != null && !universityName.isEmpty()) {

@@ -1,7 +1,7 @@
 # Students Management Service
 
 ## Overview
-This service manages universities and faculties, providing endpoints for retrieving and updating university and faculty data.
+This service manages universities, faculties, and students, providing endpoints for retrieving and updating university, faculty, and student data.
 
 ## Technologies Used
 - Java
@@ -45,7 +45,7 @@ GET /faculties?page={page}&pageSize={pageSize}&universityName={universityName}
 
 #### Get faculties by tuition fee
 ```http
-GET /faculties?page={page}&pageSize={pageSize}&?tuitionFee={tuitionFee}
+GET /faculties?page={page}&pageSize={pageSize}&tuitionFee={tuitionFee}
 ```
 - Returns a paginated list of faculties filtered by tuition fee.
 
@@ -85,6 +85,80 @@ DELETE /faculties/{id}
 ```
 - Deletes a faculty by ID.
 
+### Student Service
+
+#### Get all students
+```http
+GET /students?page={page}&pageSize={pageSize}
+```
+- Returns a paginated list of students.
+
+#### Get students by university name
+```http
+GET /students?page={page}&pageSize={pageSize}&universityName={universityName}
+```
+- Returns a paginated list of students filtered by university name.
+
+#### Get students by faculty name
+```http
+GET /students?page={page}&pageSize={pageSize}&facultyName={facultyName}
+```
+- Returns a paginated list of students filtered by faculty name.
+
+#### Get students by location
+```http
+GET /students?page={page}&pageSize={pageSize}&location={location}
+```
+- Returns a paginated list of students filtered by university location.
+
+#### Get student by ID
+```http
+GET /students/{id}
+```
+- Returns details of a student by ID.
+
+#### Add a new student
+```http
+POST /students
+```
+##### Request Body
+```json
+{
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john.doe@example.com",
+    "age": 20,
+    "gpa": 3.7,
+    "credits": 60,
+    "facultyId": 100
+}
+```
+- Creates a new student.
+
+#### Update an existing student
+```http
+PUT /students/{id}
+```
+##### Request Body
+```json
+{
+    "firstName": "Updated FirstName",
+    "lastName": "Updated LastName",
+    "email": "updated.email@example.com",
+    "age": 21,
+    "gpa": 3.8,
+    "credits": 90,
+    "facultyId": 100
+}
+```
+- Updates student details.
+
+#### Delete a student
+```http
+DELETE /students/{id}
+```
+- Deletes a student by ID.
+
 ## How to Run
 1. Clone the repository:
    ```sh
@@ -104,10 +178,6 @@ DELETE /faculties/{id}
    ```
 
 ## Environment Variables
-- `SPRING_DATASOURCE_URL` - Database URL
-- `SPRING_DATASOURCE_USERNAME` - Database username
-- `SPRING_DATASOURCE_PASSWORD` - Database password
-
-## License
-This project is licensed under the MIT License.
-
+- `JAVA_COURSE_DB_URL` - Database URL
+- `JAVA_COURSE_DB_USER` - Database username
+- `JAVA_COURSE_DB_PASSWORD` - Database password

@@ -4,7 +4,6 @@ import ge.bacho.students.model.dto.FacultyDTO;
 import ge.bacho.students.model.dto.UniversityDTO;
 import ge.bacho.students.model.request.FacultyRequest;
 import ge.bacho.students.persistence.entity.Faculty;
-import ge.bacho.students.persistence.entity.University;
 import ge.bacho.students.persistence.repository.FacultyRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class FacultyService {
     private final UniversityService universityService;
-    private FacultyRepository facultyRepository;
+    private final FacultyRepository facultyRepository;
 
     public FacultyService(FacultyRepository facultyRepository, UniversityService universityService) {
         this.facultyRepository = facultyRepository;
@@ -53,7 +52,7 @@ public class FacultyService {
         faculty.setTuitionFee(facultyRequest.getTuitionFee());
         faculty.setCreditsRequiredForGraduation(facultyRequest.getCreditsRequiredForGraduation());
 
-        if(facultyRequest.getUniversityId() != faculty.getUniversity().getId()) {
+        if (facultyRequest.getUniversityId() != faculty.getUniversity().getId()) {
             faculty.setUniversity(universityService.getUniversityById(facultyRequest.getUniversityId()));
         }
 
