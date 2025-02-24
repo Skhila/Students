@@ -3,6 +3,7 @@ package ge.bacho.students.controller;
 import ge.bacho.students.model.dto.StudentDTO;
 import ge.bacho.students.model.request.StudentRequest;
 import ge.bacho.students.service.StudentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -38,13 +39,13 @@ public class StudentController {
     }
 
     @PostMapping
-    ResponseEntity<Void> createStudent(@RequestBody StudentRequest studentRequest) {
+    ResponseEntity<Void> createStudent(@RequestBody @Valid StudentRequest studentRequest) {
         studentService.createStudent(studentRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("{id}")
-    StudentDTO updateStudent(@PathVariable long id, @RequestBody StudentRequest studentRequest) {
+    StudentDTO updateStudent(@PathVariable long id, @RequestBody @Valid StudentRequest studentRequest) {
         return studentService.updateStudent(id, studentRequest);
     }
 

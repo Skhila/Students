@@ -3,6 +3,7 @@ package ge.bacho.students.controller;
 import ge.bacho.students.model.dto.UniversityDTO;
 import ge.bacho.students.model.request.UniversityRequest;
 import ge.bacho.students.service.UniversityService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -32,13 +33,13 @@ public class UniversityController {
     }
 
     @PostMapping
-    ResponseEntity<Void> createUniversity(@RequestBody UniversityRequest universityRequest) {
+    ResponseEntity<Void> createUniversity(@RequestBody @Valid UniversityRequest universityRequest) {
         universityService.createUniversity(universityRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("{id}")
-    UniversityDTO updateUniversity(@PathVariable int id, @RequestBody UniversityRequest universityRequest) {
+    UniversityDTO updateUniversity(@PathVariable int id, @RequestBody @Valid UniversityRequest universityRequest) {
         return universityService.updateUniversity(id, universityRequest);
     }
 
