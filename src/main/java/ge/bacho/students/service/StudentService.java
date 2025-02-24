@@ -1,11 +1,13 @@
 package ge.bacho.students.service;
 
+import ge.bacho.students.error.NotFoundException;
 import ge.bacho.students.model.dto.FacultyDTO;
 import ge.bacho.students.model.dto.StudentDTO;
 import ge.bacho.students.model.dto.UniversityDTO;
 import ge.bacho.students.model.request.StudentRequest;
 import ge.bacho.students.persistence.entity.Student;
 import ge.bacho.students.persistence.repository.StudentRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -13,21 +15,17 @@ import org.springframework.stereotype.Service;
 import java.util.NoSuchElementException;
 
 @Service
+@RequiredArgsConstructor
 public class StudentService {
     private final StudentRepository studentRepository;
     private final FacultyService facultyService;
-
-    public StudentService(StudentRepository studentRepository, FacultyService facultyService) {
-        this.studentRepository = studentRepository;
-        this.facultyService = facultyService;
-    }
 
     public Page<StudentDTO> getAllStudents(int page, int pageSize) {
         return studentRepository.findAllStudents(PageRequest.of(page, pageSize));
     }
 
-    public Student getStudentById(long id) {
-        return studentRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Student with ID " + id + " not found"));
+    public Student getStudentById(Long id) {
+        return studentRepository.findById(id).orElseThrow(() -> buildNotFoundException(id));
     }
 
     public Page<StudentDTO> getStudentsByUniversityName(int page, int pageSize, String universityName) {
@@ -55,8 +53,8 @@ public class StudentService {
         studentRepository.save(student);
     }
 
-    public StudentDTO updateStudent(long id, StudentRequest studentRequest) {
-        Student student = studentRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Student with ID " + id + " not found"));
+    public StudentDTO updateStudent(Long id, StudentRequest studentRequest) {
+        Student student = studentRepository.findById(id).orElseThrow(() -> buildNotFoundException(id));
         student.setFirstName(studentRequest.getFirstName());
         student.setLastName(studentRequest.getLastName());
         student.setEmail(studentRequest.getEmail());
@@ -64,14 +62,14 @@ public class StudentService {
         student.setGpa(studentRequest.getGpa());
         student.setCredits(studentRequest.getCredits());
 
-        if (studentRequest.getFacultyId() != student.getFaculty().getId()) {
+        if (!studentRequest.getFacultyId().equals(student.getFaculty().getId())) {
             student.setFaculty(facultyService.getFacultyById(studentRequest.getFacultyId()));
         }
         studentRepository.save(student);
         return mapStudent(student);
     }
 
-    public void deleteStudent(long id) {
+    public void deleteStudent(Long id) {
         studentRepository.deleteById(id);
     }
 
@@ -96,5 +94,10 @@ public class StudentService {
                 student.getCredits(),
                 student.getGpa()
         );
+    }
+
+    private NotFoundException buildNotFoundException(Long id){
+        String errorMessage = String.format("Student with id '%s' not found", id);
+        return new NotFoundException(errorMessage);
     }
 }

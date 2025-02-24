@@ -14,7 +14,7 @@ public class Faculty {
     @Setter(AccessLevel.NONE)
     @Id
     @GeneratedValue(generator = "faculty_seq_gen", strategy = GenerationType.SEQUENCE)
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
     private String name;

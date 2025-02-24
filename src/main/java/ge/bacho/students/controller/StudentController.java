@@ -3,6 +3,8 @@ package ge.bacho.students.controller;
 import ge.bacho.students.model.dto.StudentDTO;
 import ge.bacho.students.model.request.StudentRequest;
 import ge.bacho.students.service.StudentService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,12 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/students")
+@RequiredArgsConstructor
 public class StudentController {
     private final StudentService studentService;
-
-    public StudentController(StudentService studentService) {
-        this.studentService = studentService;
-    }
 
     @GetMapping
     Page<StudentDTO> getStudents(@RequestParam(defaultValue = "0") int page,
@@ -35,23 +34,23 @@ public class StudentController {
     }
 
     @GetMapping("{id}")
-    StudentDTO getStudent(@PathVariable long id) {
+    StudentDTO getStudent(@PathVariable Long id) {
         return studentService.mapStudent(studentService.getStudentById(id));
     }
 
     @PostMapping
-    ResponseEntity<Void> createStudent(@RequestBody StudentRequest studentRequest) {
+    ResponseEntity<Void> createStudent(@RequestBody @Valid StudentRequest studentRequest) {
         studentService.createStudent(studentRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("{id}")
-    StudentDTO updateStudent(@PathVariable long id, @RequestBody StudentRequest studentRequest) {
+    StudentDTO updateStudent(@PathVariable Long id, @RequestBody @Valid StudentRequest studentRequest) {
         return studentService.updateStudent(id, studentRequest);
     }
 
     @DeleteMapping("{id}")
-    ResponseEntity<Void> deleteStudent(@PathVariable long id) {
+    ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
         studentService.deleteStudent(id);
         return ResponseEntity.noContent().build();
     }

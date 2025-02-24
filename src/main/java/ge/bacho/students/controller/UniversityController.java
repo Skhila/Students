@@ -3,6 +3,8 @@ package ge.bacho.students.controller;
 import ge.bacho.students.model.dto.UniversityDTO;
 import ge.bacho.students.model.request.UniversityRequest;
 import ge.bacho.students.service.UniversityService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,12 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/universities")
+@RequiredArgsConstructor
 public class UniversityController {
     private final UniversityService universityService;
-
-    public UniversityController(UniversityService universityService) {
-        this.universityService = universityService;
-    }
 
     @GetMapping
     Page<UniversityDTO> getUniversities(@RequestParam(defaultValue = "0") int page,
@@ -29,23 +28,23 @@ public class UniversityController {
     }
 
     @GetMapping("{id}")
-    UniversityDTO getUniversitiesById(@PathVariable int id) {
+    UniversityDTO getUniversitiesById(@PathVariable Long id) {
         return universityService.mapUniversity(universityService.getUniversityById(id));
     }
 
     @PostMapping
-    ResponseEntity<Void> createUniversity(@RequestBody UniversityRequest universityRequest) {
+    ResponseEntity<Void> createUniversity(@RequestBody @Valid UniversityRequest universityRequest) {
         universityService.createUniversity(universityRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("{id}")
-    UniversityDTO updateUniversity(@PathVariable int id, @RequestBody UniversityRequest universityRequest) {
+    UniversityDTO updateUniversity(@PathVariable Long id, @RequestBody @Valid UniversityRequest universityRequest) {
         return universityService.updateUniversity(id, universityRequest);
     }
 
     @DeleteMapping("{id}")
-    ResponseEntity<Void> deleteUniversity(@PathVariable int id) {
+    ResponseEntity<Void> deleteUniversity(@PathVariable Long id) {
         universityService.deleteUniversity(id);
         return ResponseEntity.noContent().build();
     }

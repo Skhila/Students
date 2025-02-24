@@ -3,6 +3,8 @@ package ge.bacho.students.controller;
 import ge.bacho.students.model.dto.FacultyDTO;
 import ge.bacho.students.model.request.FacultyRequest;
 import ge.bacho.students.service.FacultyService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,12 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/faculties")
+@RequiredArgsConstructor
 public class FacultyController {
     private final FacultyService facultyService;
-
-    public FacultyController(FacultyService facultyService) {
-        this.facultyService = facultyService;
-    }
 
     @GetMapping
     Page<FacultyDTO> getFaculties(@RequestParam(defaultValue = "0") int page,
@@ -32,23 +31,23 @@ public class FacultyController {
     }
 
     @GetMapping("{id}")
-    FacultyDTO getFaculty(@PathVariable int id) {
+    FacultyDTO getFaculty(@PathVariable Long id) {
         return facultyService.mapFaculty(facultyService.getFacultyById(id));
     }
 
     @PostMapping
-    ResponseEntity<Void> createFaculty(@RequestBody FacultyRequest facultyRequest) {
+    ResponseEntity<Void> createFaculty(@RequestBody @Valid FacultyRequest facultyRequest) {
         facultyService.createFaculty(facultyRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("{id}")
-    FacultyDTO updateFaculty(@PathVariable int id, @RequestBody FacultyRequest facultyRequest) {
+    FacultyDTO updateFaculty(@PathVariable Long id, @RequestBody @Valid FacultyRequest facultyRequest) {
         return facultyService.updateFaculty(id, facultyRequest);
     }
 
     @DeleteMapping("{id}")
-    ResponseEntity<Void> deleteFaculty(@PathVariable int id) {
+    ResponseEntity<Void> deleteFaculty(@PathVariable Long id) {
         facultyService.deleteFaculty(id);
         return ResponseEntity.noContent().build();
     }
