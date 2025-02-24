@@ -6,7 +6,7 @@ import lombok.*;
 @AllArgsConstructor
 public class StudentDTO {
     @Setter(AccessLevel.NONE)
-    private long id;
+    private Long id;
 
     private String firstName;
 

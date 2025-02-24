@@ -20,5 +20,5 @@ public class FacultyRequest {
     private int creditsRequiredForGraduation;
 
     @Positive
-    private long universityId;
+    private Long universityId;
 }

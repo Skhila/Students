@@ -1,5 +1,6 @@
 package ge.bacho.students.service;
 
+import ge.bacho.students.error.NotFoundException;
 import ge.bacho.students.model.dto.FacultyDTO;
 import ge.bacho.students.model.dto.UniversityDTO;
 import ge.bacho.students.model.request.FacultyRequest;
@@ -20,8 +21,8 @@ public class FacultyService {
         return facultyRepository.findAllFaculties(PageRequest.of(page, pageSize));
     }
 
-    public Faculty getFacultyById(long id) {
-        return facultyRepository.findById(id).get();
+    public Faculty getFacultyById(Long id) {
+        return facultyRepository.findById(id).orElseThrow(() -> buildNotFoundException(id));
     }
 
     public Page<FacultyDTO> getFacultiesByUniversityName(int page, int pageSize, String universityName) {
@@ -42,13 +43,13 @@ public class FacultyService {
         facultyRepository.save(faculty);
     }
 
-    public FacultyDTO updateFaculty(long id, FacultyRequest facultyRequest) {
-        Faculty faculty = facultyRepository.findById(id).get();
+    public FacultyDTO updateFaculty(Long id, FacultyRequest facultyRequest) {
+        Faculty faculty = facultyRepository.findById(id).orElseThrow(() -> buildNotFoundException(id));
         faculty.setName(facultyRequest.getName());
         faculty.setTuitionFee(facultyRequest.getTuitionFee());
         faculty.setCreditsRequiredForGraduation(facultyRequest.getCreditsRequiredForGraduation());
 
-        if (facultyRequest.getUniversityId() != faculty.getUniversity().getId()) {
+        if (!facultyRequest.getUniversityId().equals(faculty.getUniversity().getId())) {
             faculty.setUniversity(universityService.getUniversityById(facultyRequest.getUniversityId()));
         }
 
@@ -56,7 +57,7 @@ public class FacultyService {
         return mapFaculty(faculty);
     }
 
-    public void deleteFaculty(long id) {
+    public void deleteFaculty(Long id) {
         facultyRepository.deleteById(id);
     }
 
@@ -66,5 +67,9 @@ public class FacultyService {
         );
     }
 
+    private NotFoundException buildNotFoundException(Long id){
+        String errorMessage = String.format("Faculty with id '%s' not found", id);
+        return new NotFoundException(errorMessage);
+    }
 }
 

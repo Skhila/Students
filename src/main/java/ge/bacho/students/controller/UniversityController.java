@@ -28,7 +28,7 @@ public class UniversityController {
     }
 
     @GetMapping("{id}")
-    UniversityDTO getUniversitiesById(@PathVariable int id) {
+    UniversityDTO getUniversitiesById(@PathVariable Long id) {
         return universityService.mapUniversity(universityService.getUniversityById(id));
     }
 
@@ -39,12 +39,12 @@ public class UniversityController {
     }
 
     @PutMapping("{id}")
-    UniversityDTO updateUniversity(@PathVariable int id, @RequestBody @Valid UniversityRequest universityRequest) {
+    UniversityDTO updateUniversity(@PathVariable Long id, @RequestBody @Valid UniversityRequest universityRequest) {
         return universityService.updateUniversity(id, universityRequest);
     }
 
     @DeleteMapping("{id}")
-    ResponseEntity<Void> deleteUniversity(@PathVariable int id) {
+    ResponseEntity<Void> deleteUniversity(@PathVariable Long id) {
         universityService.deleteUniversity(id);
         return ResponseEntity.noContent().build();
     }

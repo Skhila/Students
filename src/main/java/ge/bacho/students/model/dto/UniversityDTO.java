@@ -6,7 +6,7 @@ import lombok.*;
 @AllArgsConstructor
 public class UniversityDTO {
     @Setter(AccessLevel.NONE)
-    private final long id;
+    private final Long id;
 
     private String name;
 

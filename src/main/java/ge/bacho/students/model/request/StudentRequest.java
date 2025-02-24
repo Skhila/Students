@@ -22,7 +22,7 @@ public class StudentRequest {
     private int age;
 
     @Positive
-    private long facultyId;
+    private Long facultyId;
 
     @Positive
     private int credits;

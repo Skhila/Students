@@ -34,7 +34,7 @@ public class StudentController {
     }
 
     @GetMapping("{id}")
-    StudentDTO getStudent(@PathVariable long id) {
+    StudentDTO getStudent(@PathVariable Long id) {
         return studentService.mapStudent(studentService.getStudentById(id));
     }
 
@@ -45,12 +45,12 @@ public class StudentController {
     }
 
     @PutMapping("{id}")
-    StudentDTO updateStudent(@PathVariable long id, @RequestBody @Valid StudentRequest studentRequest) {
+    StudentDTO updateStudent(@PathVariable Long id, @RequestBody @Valid StudentRequest studentRequest) {
         return studentService.updateStudent(id, studentRequest);
     }
 
     @DeleteMapping("{id}")
-    ResponseEntity<Void> deleteStudent(@PathVariable long id) {
+    ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
         studentService.deleteStudent(id);
         return ResponseEntity.noContent().build();
     }

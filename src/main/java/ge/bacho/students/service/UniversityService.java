@@ -1,5 +1,6 @@
 package ge.bacho.students.service;
 
+import ge.bacho.students.error.NotFoundException;
 import ge.bacho.students.model.dto.UniversityDTO;
 import ge.bacho.students.model.request.UniversityRequest;
 import ge.bacho.students.persistence.entity.University;
@@ -24,9 +25,8 @@ public class UniversityService {
         return universityRepository.findUniversitiesByLocation(location, PageRequest.of(page, pageSize));
     }
 
-    public University getUniversityById(long id) {
-        return universityRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("University with ID " + id + " not found"));
+    public University getUniversityById(Long id) {
+        return universityRepository.findById(id).orElseThrow(() -> buildNotFoundException(id));
     }
 
     public void createUniversity(UniversityRequest universityRequest) {
@@ -37,8 +37,8 @@ public class UniversityService {
         universityRepository.save(university);
     }
 
-    public UniversityDTO updateUniversity(long id, UniversityRequest universityRequest) {
-        University university = universityRepository.findById(id).get();
+    public UniversityDTO updateUniversity(Long id, UniversityRequest universityRequest) {
+        University university = universityRepository.findById(id).orElseThrow(() -> buildNotFoundException(id));
         university.setName(universityRequest.getName());
         university.setLocation(universityRequest.getLocation());
 
@@ -46,11 +46,16 @@ public class UniversityService {
         return mapUniversity(university);
     }
 
-    public void deleteUniversity(long id) {
+    public void deleteUniversity(Long id) {
         universityRepository.deleteById(id);
     }
 
     public UniversityDTO mapUniversity(University university) {
         return new UniversityDTO(university.getId(), university.getName(), university.getLocation());
+    }
+
+    private NotFoundException buildNotFoundException(Long id){
+        String errorMessage = String.format("University with id '%s' not found", id);
+        return new NotFoundException(errorMessage);
     }
 }

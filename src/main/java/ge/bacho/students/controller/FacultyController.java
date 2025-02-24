@@ -31,7 +31,7 @@ public class FacultyController {
     }
 
     @GetMapping("{id}")
-    FacultyDTO getFaculty(@PathVariable int id) {
+    FacultyDTO getFaculty(@PathVariable Long id) {
         return facultyService.mapFaculty(facultyService.getFacultyById(id));
     }
 
@@ -42,12 +42,12 @@ public class FacultyController {
     }
 
     @PutMapping("{id}")
-    FacultyDTO updateFaculty(@PathVariable int id, @RequestBody @Valid FacultyRequest facultyRequest) {
+    FacultyDTO updateFaculty(@PathVariable Long id, @RequestBody @Valid FacultyRequest facultyRequest) {
         return facultyService.updateFaculty(id, facultyRequest);
     }
 
     @DeleteMapping("{id}")
-    ResponseEntity<Void> deleteFaculty(@PathVariable int id) {
+    ResponseEntity<Void> deleteFaculty(@PathVariable Long id) {
         facultyService.deleteFaculty(id);
         return ResponseEntity.noContent().build();
     }
