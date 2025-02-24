@@ -6,6 +6,7 @@ import ge.bacho.students.model.dto.UniversityDTO;
 import ge.bacho.students.model.request.StudentRequest;
 import ge.bacho.students.persistence.entity.Student;
 import ge.bacho.students.persistence.repository.StudentRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -13,14 +14,10 @@ import org.springframework.stereotype.Service;
 import java.util.NoSuchElementException;
 
 @Service
+@RequiredArgsConstructor
 public class StudentService {
     private final StudentRepository studentRepository;
     private final FacultyService facultyService;
-
-    public StudentService(StudentRepository studentRepository, FacultyService facultyService) {
-        this.studentRepository = studentRepository;
-        this.facultyService = facultyService;
-    }
 
     public Page<StudentDTO> getAllStudents(int page, int pageSize) {
         return studentRepository.findAllStudents(PageRequest.of(page, pageSize));

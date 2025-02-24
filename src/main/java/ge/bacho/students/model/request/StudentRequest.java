@@ -1,10 +1,9 @@
 package ge.bacho.students.model.request;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
 public class StudentRequest {
     private String firstName;
 

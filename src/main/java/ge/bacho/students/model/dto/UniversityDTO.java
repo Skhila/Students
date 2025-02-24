@@ -1,12 +1,8 @@
 package ge.bacho.students.model.dto;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 public class UniversityDTO {
     @Setter(AccessLevel.NONE)

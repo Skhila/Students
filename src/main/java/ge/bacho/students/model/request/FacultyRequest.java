@@ -1,13 +1,9 @@
 package ge.bacho.students.model.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-@Getter
-@Setter
-@ToString
+@Data
+@AllArgsConstructor
 public class FacultyRequest {
     private String name;
 

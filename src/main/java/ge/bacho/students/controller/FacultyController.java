@@ -3,6 +3,7 @@ package ge.bacho.students.controller;
 import ge.bacho.students.model.dto.FacultyDTO;
 import ge.bacho.students.model.request.FacultyRequest;
 import ge.bacho.students.service.FacultyService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,12 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/faculties")
+@RequiredArgsConstructor
 public class FacultyController {
     private final FacultyService facultyService;
-
-    public FacultyController(FacultyService facultyService) {
-        this.facultyService = facultyService;
-    }
 
     @GetMapping
     Page<FacultyDTO> getFaculties(@RequestParam(defaultValue = "0") int page,

@@ -5,20 +5,16 @@ import ge.bacho.students.model.dto.UniversityDTO;
 import ge.bacho.students.model.request.FacultyRequest;
 import ge.bacho.students.persistence.entity.Faculty;
 import ge.bacho.students.persistence.repository.FacultyRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class FacultyService {
     private final UniversityService universityService;
     private final FacultyRepository facultyRepository;
-
-    public FacultyService(FacultyRepository facultyRepository, UniversityService universityService) {
-        this.facultyRepository = facultyRepository;
-        this.universityService = universityService;
-    }
-
 
     public Page<FacultyDTO> getAllFaculties(int page, int pageSize) {
         return facultyRepository.findAllFaculties(PageRequest.of(page, pageSize));
